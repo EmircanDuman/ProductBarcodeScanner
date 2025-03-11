@@ -1,4 +1,4 @@
-package com.example.productbarcodescanner;
+package Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.core.view.WindowInsetsCompat;
 
+import Api.FoodApi;
+import Materials.Product;
+import com.example.productbarcodescanner.R;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.journeyapps.barcodescanner.CaptureActivity;

@@ -1,4 +1,4 @@
-package com.example.productbarcodescanner;
+package Api;
 
 import com.google.gson.JsonObject;
 

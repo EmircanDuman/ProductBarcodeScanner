@@ -1,4 +1,4 @@
-package com.example.productbarcodescanner;
+package Materials;
 
 import java.util.ArrayList;
 
