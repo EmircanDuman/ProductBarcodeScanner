@@ -1,5 +1,9 @@
 package Activities;
 
+import static Utils.StringUtils.capitalizeFirstLetter;
+import static Utils.StringUtils.capitalizeWithSyntax;
+import static Utils.StringUtils.parseProduct;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,7 +14,10 @@ import androidx.core.view.ViewCompat;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.core.view.WindowInsetsCompat;
@@ -55,6 +62,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_CODE_SCAN);
             }
         });
+
+        Spinner spinner = findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.spinner_items, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.post(new Runnable() {
+            @Override
+            public void run() {
+                int spinnerHeight = spinner.getHeight();
+                int verticalOffset = spinnerHeight;
+
+                spinner.setDropDownVerticalOffset(verticalOffset);
+            }
+        });
+        spinner.setAdapter(adapter);
     }
 
     @Override
@@ -96,53 +117,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    private Product parseProduct(JsonObject product) {
-        Product product1 = new Product();
-        product1.setProductName(capitalizeWithSyntax(product.get("product_name").getAsString()));
-        product1.setBarcode(product.get("code").getAsString());
-        product1.setBrand(capitalizeFirstLetter(product.get("brands").getAsString()));
-        product1.setQuantity(product.get("quantity").getAsString());
-        product1.setEcoscore(product.get("ecoscore_score").getAsInt());
-
-        // Parse ingredients
-        JsonArray ingredientsArray = product.getAsJsonArray("ingredients");
-        ArrayList<String> ingredients = new ArrayList<>();
-        for (int i = 0; i < ingredientsArray.size(); i++) {
-            JsonObject ingredientJson = ingredientsArray.get(i).getAsJsonObject();
-            String ingredientText = ingredientJson.get("text").getAsString();
-            ingredients.add(capitalizeWithSyntax(ingredientText));
-        }
-        product1.setIngredients(ingredients);
-
-        return product1;
-    }
-
-    private String capitalizeWithSyntax(String productName) {
-        if (productName == null || productName.isEmpty()) {
-            return productName;
-        }
-
-        String[] words = productName.toLowerCase().split(" ");
-        StringBuilder capitalized = new StringBuilder();
-
-        for (int i = 0; i < words.length; i++) {
-            String word = words[i];
-            if (i == 0 || (!word.equals("and") && !word.equals("the"))) {
-                word = Character.toUpperCase(word.charAt(0)) + word.substring(1);
-            }
-            capitalized.append(word).append(" ");
-        }
-
-        return capitalized.toString().trim();
-    }
-
-
-    private String capitalizeFirstLetter(String brand) {
-        if (brand == null || brand.isEmpty()) {
-            return brand;
-        }
-        return Character.toUpperCase(brand.charAt(0)) + brand.substring(1).toLowerCase();
-    }
-
 }
