@@ -1,11 +1,11 @@
 package Activities;
 
-import static Utils.StringUtils.capitalizeFirstLetter;
-import static Utils.StringUtils.capitalizeWithSyntax;
+import static Utils.StringUtils.createSearchString;
 import static Utils.StringUtils.getProductBarcode;
 import static Utils.StringUtils.parseProduct;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -13,9 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -105,7 +103,10 @@ public class MainActivity extends AppCompatActivity {
                     assert response.body() != null;
                     JsonObject product = response.body().getAsJsonObject("product");
                     Product product1 = parseProduct(product);
-                    Log.d("PRODUCT", product1.toString());
+                    String searchString = createSearchString(product1);
+                    String searchUrl = "https://www.google.com/search?tbm=isch&q=" + Uri.encode(searchString);
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(searchUrl));
+                    startActivity(browserIntent);
                 }
                 else {
                     Toast.makeText(MainActivity.this, "FAILED", Toast.LENGTH_SHORT).show();

@@ -19,6 +19,14 @@ import Materials.Product;
 
 public class StringUtils {
 
+    static List<String> validUnits = Arrays.asList("g", "kg", "ml", "l", "oz", "lb", "mg"); // List of valid units
+
+    public static String createSearchString(Product product) {
+        return (product.getBrand().equals("Unknown") ? "" : product.getBrand()) + " "
+                + (product.getBrand().equals(product.getProductName()) ? "" : product.getProductName()) + " "
+                + (validUnits.contains(product.getQuantityUnit()) ? product.getQuantity() + product.getQuantityUnit() : "");
+    }
+
     public static String capitalizeWithSyntax(String productName) {
         if (productName == null || productName.isEmpty()) {
             return productName;
@@ -36,14 +44,6 @@ public class StringUtils {
         }
 
         return capitalized.toString().trim();
-    }
-
-
-    public static String capitalizeFirstLetter(String brand) {
-        if (brand == null || brand.isEmpty()) {
-            return brand;
-        }
-        return Character.toUpperCase(brand.charAt(0)) + brand.substring(1).toLowerCase();
     }
 
     public static ArrayList<String> extractUniqueAllergens(JsonObject product) {
@@ -149,7 +149,6 @@ public class StringUtils {
 
     private static boolean isValidUnit(String unit) {
         // For example, a valid unit can be anything like "g", "kg", "ml", etc.
-        List<String> validUnits = Arrays.asList("g", "kg", "ml", "l", "oz", "lb", "mg"); // List of valid units
         return validUnits.contains(unit.toLowerCase());
     }
 
@@ -220,8 +219,21 @@ public class StringUtils {
 
         // Check if "brands" exists and parse it
         if (product.has("brands")) {
-            product1.setBrand(capitalizeFirstLetter(product.get("brands").getAsString()));
+            String brand = capitalizeWords(product.get("brands").getAsString());
+            String productName = product1.getProductName(); // Ensure product name is already set
+
+            if (productName != null && !productName.isEmpty()) {
+                String[] brandWords = brand.split("\\s+");
+
+                // Check if the brand has more than 2 words and ends with the product name
+                if (brandWords.length >= 2 && brand.endsWith(productName)) {
+                    brand = brand.substring(0, brand.lastIndexOf(productName)).trim();
+                }
+            }
+
+            product1.setBrand(brand);
         }
+
 
         //-----------------------------------
 
@@ -291,7 +303,7 @@ public class StringUtils {
 
         //-----------------------------------
 
-        if(product.has("categories_hierarchy")) {
+        if (product.has("categories_hierarchy")) {
             JsonArray categoriesArray = product.getAsJsonArray("categories_hierarchy");
             product1.setCategories(parseAndFilterCategories(categoriesArray));
         }
