@@ -1,11 +1,9 @@
 package Activities;
 
-import static Utils.StringUtils.createSearchString;
 import static Utils.StringUtils.getProductBarcode;
 import static Utils.StringUtils.parseProduct;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -24,11 +22,8 @@ import androidx.core.view.WindowInsetsCompat;
 import Api.FoodApi;
 import Materials.Product;
 import com.example.productbarcodescanner.R;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.journeyapps.barcodescanner.CaptureActivity;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,12 +98,10 @@ public class MainActivity extends AppCompatActivity {
                     assert response.body() != null;
                     JsonObject product = response.body().getAsJsonObject("product");
                     Product product1 = parseProduct(product);
-                    String searchString = createSearchString(product1);
-                    String searchUrl = "https://www.google.com/search?tbm=isch&q=" + Uri.encode(searchString);
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(searchUrl));
-                    startActivity(browserIntent);
-                }
-                else {
+                    Intent intent = new Intent(MainActivity.this, ProductShowcase.class);
+                    intent.putExtra("product", product1);
+                    startActivity(intent);
+                } else {
                     Toast.makeText(MainActivity.this, "FAILED", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -118,5 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+
     }
 }

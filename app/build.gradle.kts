@@ -40,4 +40,5 @@ dependencies {
     implementation (libs.zxing.android.embedded)
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
+    implementation (libs.jsoup)
 }

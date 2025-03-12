@@ -1,8 +1,9 @@
 package Materials;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Product {
+public class Product implements Serializable {
 
     String productName; // name
     String barcode; // barcode OPTIONAL EVEN
