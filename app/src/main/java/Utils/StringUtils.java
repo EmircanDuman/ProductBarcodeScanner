@@ -96,25 +96,72 @@ public class StringUtils {
         }
     }
 
+    public static String getProductBarcode(String barcode) {
+        switch (barcode) {
+            case "Laviva":
+                return "8690504065395";
+            case "Halley":
+                return "8690504034032";
+            case "Cheetos Mini":
+                return "8690624003093";
+            case "Hanımeller":
+                return "8690504012139";
+            case "Nesquik Gofret":
+                return "8690632049168";
+            case "Karmen":
+                return "8690766378400";
+
+            default:
+                return "NONE";
+        }
+    }
+
     public static Product parseProduct(JsonObject product) {
         Product product1 = new Product();
-        product1.setProductName(capitalizeWithSyntax(product.get("product_name").getAsString()));
-        product1.setBarcode(product.get("code").getAsString());
-        product1.setBrand(capitalizeFirstLetter(product.get("brands").getAsString()));
-        product1.setQuantity(product.get("quantity").getAsString());
-        product1.setEcoscore(product.get("ecoscore_score").getAsInt());
+
+        // Check if "product_name" exists and parse it, otherwise skip or set a default value
+        if (product.has("product_name")) {
+            product1.setProductName(capitalizeWithSyntax(product.get("product_name").getAsString()));
+        }
+
+        // Check if "code" exists and parse it
+        if (product.has("code")) {
+            product1.setBarcode(product.get("code").getAsString());
+        }
+
+        // Check if "brands" exists and parse it
+        if (product.has("brands")) {
+            product1.setBrand(capitalizeFirstLetter(product.get("brands").getAsString()));
+        }
+
+        // Check if "quantity" exists and parse it
+        if (product.has("quantity")) {
+            product1.setQuantity(product.get("quantity").getAsString());
+        }
+
+        // Check if "ecoscore_score" exists and parse it
+        if (product.has("ecoscore_score")) {
+            product1.setEcoscore(product.get("ecoscore_score").getAsInt());
+        }
+
+        // Parse allergens if present
         product1.setAllergens(extractUniqueAllergens(product));
 
         // Parse ingredients
         JsonArray ingredientsArray = product.getAsJsonArray("ingredients");
         ArrayList<String> ingredients = new ArrayList<>();
-        for (int i = 0; i < ingredientsArray.size(); i++) {
-            JsonObject ingredientJson = ingredientsArray.get(i).getAsJsonObject();
-            String ingredientText = ingredientJson.get("text").getAsString();
-            ingredients.add(capitalizeWithSyntax(ingredientText));
+        if (ingredientsArray != null) {
+            for (int i = 0; i < ingredientsArray.size(); i++) {
+                JsonObject ingredientJson = ingredientsArray.get(i).getAsJsonObject();
+                if (ingredientJson.has("text")) {
+                    String ingredientText = ingredientJson.get("text").getAsString();
+                    ingredients.add(capitalizeWithSyntax(ingredientText));
+                }
+            }
         }
         product1.setIngredients(ingredients);
 
         return product1;
     }
+
 }

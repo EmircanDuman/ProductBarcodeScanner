@@ -2,6 +2,7 @@ package Activities;
 
 import static Utils.StringUtils.capitalizeFirstLetter;
 import static Utils.StringUtils.capitalizeWithSyntax;
+import static Utils.StringUtils.getProductBarcode;
 import static Utils.StringUtils.parseProduct;
 
 import android.content.Intent;
@@ -66,16 +67,16 @@ public class MainActivity extends AppCompatActivity {
         Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.spinner_items, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.post(new Runnable() {
-            @Override
-            public void run() {
-                int spinnerHeight = spinner.getHeight();
-                int verticalOffset = spinnerHeight;
+        spinner.post(() -> {
+            int spinnerHeight = spinner.getHeight();
+            int verticalOffset = spinnerHeight;
 
-                spinner.setDropDownVerticalOffset(verticalOffset);
-            }
+            spinner.setDropDownVerticalOffset(verticalOffset);
         });
         spinner.setAdapter(adapter);
+
+        Button directCallButton = findViewById(R.id.direct_call_button);
+        directCallButton.setOnClickListener(v -> fetchProductInfo(getProductBarcode(spinner.getSelectedItem().toString())));
     }
 
     @Override
