@@ -9,6 +9,7 @@ public class Product {
     String brand; // brand
     String imageUrl; // MUST BE FILLED VIA WEB-SCRAPING
     String quantity; // weight
+    String quantityUnit; // weight_unit
     Integer ecoscore; // if ecoscore_score value exists
     ArrayList<String> allergens;
     ArrayList<String> ingredients;
@@ -17,22 +18,21 @@ public class Product {
     public Product(){
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productName='" + productName + '\'' +
-                ", barcode='" + barcode + '\'' +
-                ", brand='" + brand + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", quantity='" + quantity + '\'' +
-                ", ecoscore=" + ecoscore +
-                ", allergens=" + allergens +
-                ", ingredients=" + ingredients +
-                ", categories=" + categories +
-                '}';
+    public String getQuantityUnit() {
+        if(quantityUnit == null){
+            return "g";
+        }
+        return quantityUnit;
+    }
+
+    public void setQuantityUnit(String quantityUnit) {
+        this.quantityUnit = quantityUnit;
     }
 
     public ArrayList<String> getAllergens() {
+        if (allergens == null){
+            return new ArrayList<>();
+        }
         return allergens;
     }
 
@@ -41,6 +41,9 @@ public class Product {
     }
 
     public ArrayList<String> getIngredients() {
+        if (ingredients == null){
+            return new ArrayList<>();
+        }
         return ingredients;
     }
 
@@ -49,6 +52,9 @@ public class Product {
     }
 
     public ArrayList<String> getCategories() {
+        if (categories == null){
+            return new ArrayList<>();
+        }
         return categories;
     }
 
@@ -57,6 +63,9 @@ public class Product {
     }
 
     public String getProductName() {
+        if (productName == null){
+            return "Unknown";
+        }
         return productName;
     }
 
@@ -65,6 +74,9 @@ public class Product {
     }
 
     public String getBarcode() {
+        if (barcode == null){
+            return "Unknown";
+        }
         return barcode;
     }
 
@@ -73,6 +85,9 @@ public class Product {
     }
 
     public String getBrand() {
+        if (brand == null){
+            return "Unknown";
+        }
         return brand;
     }
 
@@ -81,6 +96,9 @@ public class Product {
     }
 
     public String getImageUrl() {
+        if (imageUrl == null){
+            return "";
+        }
         return imageUrl;
     }
 
@@ -89,6 +107,9 @@ public class Product {
     }
 
     public String getQuantity() {
+        if (quantity == null){
+            return "0";
+        }
         return quantity;
     }
 
