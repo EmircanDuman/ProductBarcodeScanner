@@ -1,13 +1,24 @@
 package Activities;
 
+import static Utils.StringUtils.generateBarcode;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.productbarcodescanner.R;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import Materials.Product;
 
@@ -15,54 +26,34 @@ public class ProductShowcase extends AppCompatActivity {
 
     private Product product;
     private LinearLayout productContainer;
-
+    private LayoutInflater inflater;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_showcase);
 
+        Intent intent = getIntent();
+        this.product = (Product) intent.getSerializableExtra("product");
         productContainer = findViewById(R.id.productContainer);
 
-        // Retrieve Product Object from Intent
-        Intent intent = getIntent();
-        product = (Product) intent.getSerializableExtra("product");
+        if(product == null) return;
 
-        // Populate UI dynamically
-        if (product != null) {
-            addTextView("Product Name: ", product.getProductName());
-            addTextView("Barcode: ", product.getBarcode());
-            addTextView("Brand: ", product.getBrand());
-            addTextView("Quantity: ", product.getQuantity() + " " + product.getQuantityUnit());
+        this.inflater = LayoutInflater.from(this);
 
-            // Ecoscore check
-            if (product.getEcoscore() != null) {
-                addTextView("Eco Score: ", String.valueOf(product.getEcoscore()));
-            }
+        View productNameView = inflater.inflate(R.layout.product_name_section, productContainer, false);
+        TextView productName = productNameView.findViewById(R.id.productName);
+        TextView brandName = productNameView.findViewById(R.id.brandName);
+        ImageView barcodeImage = productNameView.findViewById(R.id.barcodeImage);
+        TextView barcodeText = productNameView.findViewById(R.id.barcodeText);
 
-            // Ingredients
-            if (product.getIngredients() != null && !product.getIngredients().isEmpty()) {
-                addTextView("Ingredients: ", String.join(", ", product.getIngredients()));
-            }
-
-            // Allergens
-            if (product.getAllergens() != null && !product.getAllergens().isEmpty()) {
-                addTextView("Allergens: ", String.join(", ", product.getAllergens()));
-            }
-
-            // Categories
-            if (product.getCategories() != null && !product.getCategories().isEmpty()) {
-                addTextView("Categories: ", String.join(", ", product.getCategories()));
-            }
+        productName.setText(product.getProductName());
+        brandName.setText(product.getBrand());
+        Bitmap barcodeBitmap = generateBarcode(product.getBarcode(), 600, 200);
+        if (barcodeBitmap != null) {
+            barcodeImage.setImageBitmap(barcodeBitmap);
         }
-    }
+        barcodeText.setText(product.getBarcode());
+        productContainer.addView(productNameView);
 
-    private void addTextView(String label, String value) {
-        if (value == null || value.isEmpty()) return;
-
-        TextView textView = new TextView(this);
-        textView.setText(label + value);
-        textView.setTextSize(16);
-        textView.setPadding(0, 10, 0, 10);
-        productContainer.addView(textView);
     }
 }

@@ -1,8 +1,14 @@
 package Utils;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +31,28 @@ public class StringUtils {
         return (product.getBrand().equals("Unknown") ? "" : product.getBrand()) + " "
                 + (product.getBrand().equals(product.getProductName()) ? "" : product.getProductName()) + " "
                 + (validUnits.contains(product.getQuantityUnit()) ? product.getQuantity() + product.getQuantityUnit() : "");
+    }
+
+    public static Bitmap generateBarcode(String data, int width, int height) {
+        try {
+            BitMatrix bitMatrix = new MultiFormatWriter().encode(
+                    data, BarcodeFormat.CODE_128, width, height);
+
+            int[] pixels = new int[width * height];
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    pixels[y * width + x] = bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF; // Black and white
+                }
+            }
+
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+            return bitmap;
+
+        } catch (WriterException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static String capitalizeWithSyntax(String productName) {

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 public class Product implements Serializable {
 
     String productName; // name
-    String barcode; // barcode OPTIONAL EVEN
     String brand; // brand
+    String barcode; // barcode OPTIONAL EVEN
     String imageUrl; // MUST BE FILLED VIA WEB-SCRAPING
     String quantity; // weight
     String quantityUnit; // weight_unit
