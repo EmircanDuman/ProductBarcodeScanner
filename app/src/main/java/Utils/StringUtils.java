@@ -175,7 +175,7 @@ public class StringUtils {
         }
     }
 
-    private static boolean isValidUnit(String unit) {
+    public static boolean isValidUnit(String unit) {
         // For example, a valid unit can be anything like "g", "kg", "ml", etc.
         return validUnits.contains(unit.toLowerCase());
     }

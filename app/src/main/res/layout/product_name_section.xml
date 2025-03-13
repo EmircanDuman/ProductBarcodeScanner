@@ -6,43 +6,40 @@
     android:layout_height="match_parent"
     android:background="@drawable/rounded_green_bg_white_border"
     android:padding="20dp">
-
-    <LinearLayout
-        android:id="@+id/linearContainer"
+    <TextView
+        android:id="@+id/productName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:textColor="@color/white"
+        android:text="Unknown"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/productName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Unknown"
-            android:textSize="24sp"
-            android:fontFamily="@font/roboto"
-            android:textFontWeight="700"
-            />
+        android:textSize="24sp"
+        android:fontFamily="@font/roboto"
+        android:textFontWeight="700"
+        />
 
-        <TextView
-            android:id="@+id/brandName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Unknown"
-            android:textSize="20sp"
-            android:fontFamily="@font/roboto"
-            android:textFontWeight="400"
-            android:layout_marginStart="20dp"
-            />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/brandName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Unknown"
+        app:layout_constraintTop_toBottomOf="@id/productName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/roboto"
+        android:textFontWeight="400"
+        />
 
     <ImageView
         android:id="@+id/barcodeImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/linearContainer"
+        app:layout_constraintTop_toBottomOf="@id/brandName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp"/>
@@ -51,6 +48,7 @@
         android:id="@+id/barcodeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Barcode"
         app:layout_constraintStart_toStartOf="@id/barcodeImage"
         app:layout_constraintEnd_toEndOf="@id/barcodeImage"
@@ -61,4 +59,18 @@
         android:fontFamily="@font/roboto"
         android:textFontWeight="400"
         />
+    <TextView
+        android:id="@+id/ecoScoreText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="EcoScore : "
+        app:layout_constraintTop_toBottomOf="@id/barcodeText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/roboto"
+        android:textFontWeight="400"
+        android:textAlignment="center"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

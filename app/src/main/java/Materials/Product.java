@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 public class Product implements Serializable {
 
-    String productName; // name
-    String brand; // brand
-    String barcode; // barcode OPTIONAL EVEN
-    String imageUrl; // MUST BE FILLED VIA WEB-SCRAPING
-    String quantity; // weight
-    String quantityUnit; // weight_unit
-    Integer ecoscore; // if ecoscore_score value exists
+    String productName; // name             ++
+    String brand; // brand                  ++
+    String barcode; // barcode              ++
+    String imageUrl; // ignored             -
+    String quantity; // weight              ++
+    String quantityUnit; // weight_unit     ++
+    Integer ecoscore; // ecoscore
     ArrayList<String> allergens;
     ArrayList<String> ingredients;
     ArrayList<String> categories;
@@ -21,7 +21,7 @@ public class Product implements Serializable {
 
     public String getQuantityUnit() {
         if(quantityUnit == null){
-            return "g";
+            setQuantityUnit("g");
         }
         return quantityUnit;
     }
@@ -32,7 +32,7 @@ public class Product implements Serializable {
 
     public ArrayList<String> getAllergens() {
         if (allergens == null){
-            return new ArrayList<>();
+            setAllergens(new ArrayList<>());
         }
         return allergens;
     }
@@ -43,7 +43,7 @@ public class Product implements Serializable {
 
     public ArrayList<String> getIngredients() {
         if (ingredients == null){
-            return new ArrayList<>();
+            setIngredients(new ArrayList<>());
         }
         return ingredients;
     }
@@ -54,7 +54,7 @@ public class Product implements Serializable {
 
     public ArrayList<String> getCategories() {
         if (categories == null){
-            return new ArrayList<>();
+            setCategories(new ArrayList<String>());
         }
         return categories;
     }
@@ -65,7 +65,7 @@ public class Product implements Serializable {
 
     public String getProductName() {
         if (productName == null){
-            return "Unknown";
+            setProductName("Unknown");
         }
         return productName;
     }
@@ -76,7 +76,7 @@ public class Product implements Serializable {
 
     public String getBarcode() {
         if (barcode == null){
-            return "Unknown";
+            setBarcode("Unknown");
         }
         return barcode;
     }
@@ -87,7 +87,7 @@ public class Product implements Serializable {
 
     public String getBrand() {
         if (brand == null){
-            return "Unknown";
+            setBrand("Unknown");
         }
         return brand;
     }
@@ -98,7 +98,7 @@ public class Product implements Serializable {
 
     public String getImageUrl() {
         if (imageUrl == null){
-            return "";
+            setImageUrl("Unknown");
         }
         return imageUrl;
     }
@@ -109,7 +109,7 @@ public class Product implements Serializable {
 
     public String getQuantity() {
         if (quantity == null){
-            return "0";
+            setQuantity("0");
         }
         return quantity;
     }
@@ -119,6 +119,9 @@ public class Product implements Serializable {
     }
 
     public Integer getEcoscore() {
+        if(ecoscore == null){
+            setEcoscore(0);
+        }
         return ecoscore;
     }
 
