@@ -11,10 +11,10 @@ public class Product implements Serializable {
     String imageUrl; // ignored             -
     String quantity; // weight              ++
     String quantityUnit; // weight_unit     ++
-    Integer ecoscore; // ecoscore
-    ArrayList<String> allergens;
-    ArrayList<String> ingredients;
-    ArrayList<String> categories;
+    Integer ecoscore; // ecoscore           ++
+    ArrayList<String> allergens; //         ++
+    ArrayList<String> ingredients; //       ++
+    ArrayList<String> categories; //        ++
 
     public Product(){
     }
